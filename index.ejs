@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Forum</title>
+</head>
+<body>
+    <h1>Forum</h1>
+
+    <form action="/posts/new" method="POST">
+        <input type="text" name="title" placeholder="Title" required>
+        <textarea name="content" placeholder="Content" required></textarea>
+        <button type="submit">Post</button>
+    </form>
+
+    <ul>
+        <% posts.forEach(post => { %>
+            <li>
+                <h2><%= post.title %></h2>
+                <p><%= post.content %> - <small>by <%= post.author %></small></p>
+                <% if (session && (session.role === 'admin' || session.role === 'moderator')) { %>
+                    <form action="/posts/delete/<%= post._id %>" method="POST">
+                        <button type="submit">Delete</button>
+                    </form>
+                <% } %>
+            </li>
+        <% }) %>
+    </ul>
+</body>
+</html>
